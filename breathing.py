@@ -27,9 +27,9 @@ def main():
     sensor = 1
 
     # Default configuration is 6, 20, 20
-    # For our case, change to 0, 30, 20
+    # Accuracy seems to be wayy far off set to 1
     breathing_processor_config = BreathingProcessorConfig(
-        lowest_breathing_rate=0,
+        lowest_breathing_rate=4,
         highest_breathing_rate=30,
         time_series_length_s=20,
     )
@@ -47,7 +47,7 @@ def main():
     ref_app_config = RefAppConfig(
         use_presence_processor=True,
         #Adjust start and end of range as appropriate
-        start_m=0,
+        start_m=0.5, #cannot be 0
         end_m=1.7,
         num_distances_to_analyze=3,
         distance_determination_duration=5,
