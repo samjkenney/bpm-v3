@@ -48,8 +48,8 @@ def main():
     ref_app_config = RefAppConfig(
         use_presence_processor=True,
         #Adjust start and end of range as appropriate
-        start_m=0.5, #cannot be 0
-        end_m=1.7,
+        start_m=0.4, #cannot be 0
+        end_m=0.8,
         num_distances_to_analyze=3,
         distance_determination_duration=5,
         breathing_config=breathing_processor_config,
@@ -74,7 +74,7 @@ def main():
     start_time = time.time()
 
     #opens a NumPy File
-    with open('breathing_data.csv', 'w', newline = '') as csvfile:
+    with open('sensor_data_test.csv', 'w', newline = '') as csvfile:
         csv_writer = csv.writer(csvfile)
         csv_writer.writerow(["Timestamp", "Breath Rate"])
         while not interrupt_handler.got_signal:
