@@ -64,36 +64,36 @@ def main():
     client = a121.Client.open(serial_port="COM7", override_baudrate=115200)
     client.setup_session(sensor_config)
 
-    # Preparation for reference application processor
-    ref_app = RefApp(client=client, sensor_id=sensor, ref_app_config=ref_app_config)
-    ref_app.start()
+    with a121.H5Recorder("./raw_data.h5",client):
+        # Preparation for reference application processor
+        ref_app = RefApp(client=client, sensor_id=sensor, ref_app_config=ref_app_config)
+        ref_app.start()
 
-    interrupt_handler = et.utils.ExampleInterruptHandler()
-    print("Press Ctrl-C to end session")
+        interrupt_handler = et.utils.ExampleInterruptHandler()
+        print("Press Ctrl-C to end session")
 
-    start_time = time.time()
-
-    #opens a NumPy File
-    with open('sensor_data_test.csv', 'w', newline = '') as csvfile:
-        csv_writer = csv.writer(csvfile)
-        csv_writer.writerow(["Timestamp", "Breath Rate"])
-        while not interrupt_handler.got_signal:
-            #Gets the data from the sensor
-            processed_data = ref_app.get_next()
-            try:
-                if (processed_data.breathing_result):
-                    if (processed_data.breathing_result.breathing_rate):
-                        currentTime = time.time() - start_time
-                        print(f"{currentTime}\t{processed_data.breathing_result.breathing_rate}")
-                        tosend = [currentTime, processed_data.breathing_result.breathing_rate]
-                        #Sends an array of the time and respiration rate to csv file
-                        csv_writer.writerow(tosend)
+        start_time = time.time()
+        #opens a csv file
+        with open('breathing_data.csv', 'w', newline = '') as csvfile:
+            csv_writer = csv.writer(csvfile)
+            csv_writer.writerow(["Timestamp", "Breath Rate"])
+            while not interrupt_handler.got_signal:
+                #Gets the data from the sensor
+                processed_data = ref_app.get_next()
+                try:
+                    if (processed_data.breathing_result):
+                        if (processed_data.breathing_result.breathing_rate):
+                            currentTime = time.time() - start_time
+                            print(f"{currentTime}\t{processed_data.breathing_result.breathing_rate}")
+                            tosend = [currentTime, processed_data.breathing_result.breathing_rate]
+                            #Sends an array of the time and respiration rate to csv file
+                            csv_writer.writerow(tosend)
+                        else:
+                            print("Calculating respiration rate...")
                     else:
-                        print("Calculating respiration rate...")
-                else:
-                    print("Breath results not yet calculted")
-            except et.PGProccessDiedException:
-                break
+                        print("Breath results not yet calculted")
+                except et.PGProccessDiedException:
+                    break
 
     
 
