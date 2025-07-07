@@ -64,7 +64,7 @@ def main():
     client = a121.Client.open(serial_port="COM7", override_baudrate=115200)
     client.setup_session(sensor_config)
 
-    with a121.H5Recorder("./raw_data.h5",client):
+    with a121.H5Recorder("./raw_data-5.h5",client):
         # Preparation for reference application processor
         ref_app = RefApp(client=client, sensor_id=sensor, ref_app_config=ref_app_config)
         ref_app.start()
@@ -74,7 +74,7 @@ def main():
 
         start_time = time.time()
         #opens a csv file
-        with open('breathing_data.csv', 'w', newline = '') as csvfile:
+        with open('sensorData-h9-d0.6-side.csv', 'w', newline = '') as csvfile:
             csv_writer = csv.writer(csvfile)
             csv_writer.writerow(["Timestamp", "Breath Rate"])
             while not interrupt_handler.got_signal:
