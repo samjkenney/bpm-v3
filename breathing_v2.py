@@ -31,9 +31,9 @@ def main():
     # Default configuration is 6, 20, 20
     # Accuracy seems to be wayy far off set to 1
     breathing_processor_config = BreathingProcessorConfig(
-        lowest_breathing_rate=1,
-        highest_breathing_rate=15,
-        time_series_length_s=20,
+        lowest_breathing_rate=2,
+        highest_breathing_rate=11,
+        time_series_length_s=10,
     )
 
     # Presence Configurations
@@ -49,8 +49,8 @@ def main():
     ref_app_config = RefAppConfig(
         use_presence_processor=True,
         #Adjust start and end of range as appropriate
-        start_m=0.35, #cannot be 0
-        end_m=0.7,
+        start_m=0.6, #cannot be 0
+        end_m=1,
         num_distances_to_analyze=3,
         distance_determination_duration=5,
         breathing_config=breathing_processor_config,
@@ -68,7 +68,7 @@ def main():
 
     ratio = 1
     
-    with a121.H5Recorder("./raw_data-54.h5",client):
+    with a121.H5Recorder("./raw_data-58.h5",client):
         # Preparation for reference application processor
         ref_app = RefApp(client=client, sensor_id=sensor, ref_app_config=ref_app_config)
         ref_app.start()
@@ -78,7 +78,7 @@ def main():
 
         start_time = time.time()
         #opens a csv file
-        with open('sensorData-h9-d.5-front-v5.csv', 'w', newline = '') as csvfile:
+        with open('sensorData-h2-d.8-front.csv', 'w', newline = '') as csvfile:
             csv_writer = csv.writer(csvfile)
             csv_writer.writerow(["Timestamp", "Breath Rate"])
             while not interrupt_handler.got_signal:
