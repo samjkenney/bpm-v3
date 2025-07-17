@@ -78,7 +78,7 @@ def main():
 
         start_time = time.time()
         #opens a csv file
-        with open('sensorData-h3-d0.6-front-r2.csv', 'w', newline = '') as csvfile:
+        with open('sensorData-h4-d0.6-front-r2.csv', 'w', newline = '') as csvfile:
             csv_writer = csv.writer(csvfile)
             csv_writer.writerow(["Timestamp", "Breath Rate"])
             while not interrupt_handler.got_signal:
