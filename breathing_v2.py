@@ -49,8 +49,8 @@ def main():
     ref_app_config = RefAppConfig(
         use_presence_processor=True,
         #Adjust start and end of range as appropriate
-        start_m=0.6, #cannot be 0
-        end_m=1,
+        start_m=0.4, #cannot be 0
+        end_m=0.8,
         num_distances_to_analyze=3,
         distance_determination_duration=5,
         breathing_config=breathing_processor_config,
@@ -68,7 +68,7 @@ def main():
 
     ratio = 1
     
-    with a121.H5Recorder("./raw_data-58.h5",client):
+    with a121.H5Recorder("./raw_data-59.h5",client):
         # Preparation for reference application processor
         ref_app = RefApp(client=client, sensor_id=sensor, ref_app_config=ref_app_config)
         ref_app.start()
@@ -78,7 +78,7 @@ def main():
 
         start_time = time.time()
         #opens a csv file
-        with open('sensorData-h2-d.8-front.csv', 'w', newline = '') as csvfile:
+        with open('sensorData-h2-d0.6-front-v6.csv', 'w', newline = '') as csvfile:
             csv_writer = csv.writer(csvfile)
             csv_writer.writerow(["Timestamp", "Breath Rate"])
             while not interrupt_handler.got_signal:
