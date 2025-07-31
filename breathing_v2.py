@@ -31,32 +31,36 @@ def main():
     # Default configuration is 6, 20, 20
     # Accuracy seems to be wayy far off set to 1
     breathing_processor_config = BreathingProcessorConfig(
-        lowest_breathing_rate=2,
-        highest_breathing_rate=11,
+        lowest_breathing_rate=2.1,
+        highest_breathing_rate=13.7,
         time_series_length_s=10,
     )
 
     # Presence Configurations
     presence_config = PresenceProcessorConfig(
         intra_detection_threshold=4,
-        intra_frame_time_const=0.15,
+        intra_frame_time_const=0.05,
         inter_frame_fast_cutoff=20,
         inter_frame_slow_cutoff=0.2,
         inter_frame_deviation_time_const=0.5,
+        inter_detection_threshold= 1.3,
+        intra_output_time_const=0.5, 
     )
 
     # Breathing Configurations
     ref_app_config = RefAppConfig(
-        use_presence_processor=True,
+        use_presence_processor=False,
         #Adjust start and end of range as appropriate
         start_m=0.4, #cannot be 0
         end_m=0.8,
-        num_distances_to_analyze=5,
-        distance_determination_duration=5,
+        hwaas = 50,
+        num_distances_to_analyze=3,
+        #frame_rate = 15,
+        #sweeps_per_frame= 24, 
+        distance_determination_duration=10,
         breathing_config=breathing_processor_config,
         presence_config=presence_config,
-        #profile = Profile.PROFILE_4
-
+        profile = Profile.PROFILE_5
     )
 
     # End setup configurations
@@ -68,7 +72,7 @@ def main():
 
     ratio = 1
     
-    with a121.H5Recorder("./raw_data-65.h5",client):
+    with a121.H5Recorder("./raw_data-145.h5",client):
         # Preparation for reference application processor
         ref_app = RefApp(client=client, sensor_id=sensor, ref_app_config=ref_app_config)
         ref_app.start()
@@ -76,34 +80,90 @@ def main():
         interrupt_handler = et.utils.ExampleInterruptHandler()
         print("Press Ctrl-C to end session")
 
-        start_time = time.time()
+    
+        startTime = time.time()
         #opens a csv file
-        with open('sensorData-h7-d0.6-front-r3.csv', 'w', newline = '') as csvfile:
+        with open('sensorData-d0.6-front-r5-15.csv', 'w', newline = '') as csvfile:
             csv_writer = csv.writer(csvfile)
-            csv_writer.writerow(["Timestamp", "Breath Rate"])
+            csv_writer.writerow(["Timestamp", "Breath Rate", 
+                                 "App State", "Distances Being Analyzed",
+                                 "Intra Presence Score", "Intra",
+                                   "Inter Presence Score", "Inter",
+                                 "Presence Distance", "Presence Detected", 
+                                   "Frame", "Abs Mean Sweep", 
+                                  "Fast LP Mean Sweep", "Slow LP Mean Sweep", "LP Noise",
+                                   "Presence Distance Index", "PSD", "Frequencies", "Breathing Motion", 
+                                    "Time Vector", "Breathing Rate History",
+                                     "All Breathing Rate History"])
             while not interrupt_handler.got_signal:
                 #Gets the data from the sensor
                 distressCounter = 0
                 processed_data = ref_app.get_next()
+                currentTime = time.time() - startTime
                 try:
                     if (processed_data.breathing_result):
                         if (processed_data.breathing_result.breathing_rate):
                             calibratedBPM = processed_data.breathing_result.breathing_rate * ratio
-                            currentTime = time.time() - start_time
+                            
                             print(f"{currentTime}\t{calibratedBPM}")
-                            tosend = [currentTime, calibratedBPM]
+                            tosend = [currentTime, calibratedBPM, 
+                                      processed_data.app_state, processed_data.distances_being_analyzed, 
+                                      processed_data.presence_result.intra_presence_score, processed_data.presence_result.intra, 
+                                      processed_data.presence_result.inter_presence_score, processed_data.presence_result.inter,
+                                      processed_data.presence_result.presence_distance, processed_data.presence_result.presence_detected,
+                                      processed_data.presence_result.extra_result.frame, processed_data.presence_result.extra_result.abs_mean_sweep,
+                                      processed_data.presence_result.extra_result.fast_lp_mean_sweep, processed_data.presence_result.extra_result.slow_lp_mean_sweep,
+                                      processed_data.presence_result.extra_result.lp_noise, processed_data.presence_result.extra_result.presence_distance_index,
+                                      processed_data.breathing_result.extra_result.psd, processed_data.breathing_result.extra_result.frequencies, 
+                                      processed_data.breathing_result.extra_result.breathing_motion, processed_data.breathing_result.extra_result.time_vector,
+                                      processed_data.breathing_result.extra_result.breathing_rate_history, processed_data.breathing_result.extra_result.all_breathing_rate_history]
                             #Sends an array of the time and respiration rate to csv file
                             csv_writer.writerow(tosend)
-                            if (calibratedBPM < 5):
-                                distressCounter = distressCounter + 1
-                            else:
-                                distressCounter = 0
-                            if (distressCounter > 960):
-                                print("signal send")
                         else:
+                            #breathing result exists, but rate not determined
+                            toSend = [currentTime, 'N/A', 
+                                      processed_data.app_state, processed_data.distances_being_analyzed, 
+                                      processed_data.presence_result.intra_presence_score, processed_data.presence_result.intra, 
+                                      processed_data.presence_result.inter_presence_score, processed_data.presence_result.inter,
+                                      processed_data.presence_result.presence_distance, processed_data.presence_result.presence_detected,
+                                      processed_data.presence_result.extra_result.frame, processed_data.presence_result.extra_result.abs_mean_sweep,
+                                      processed_data.presence_result.extra_result.fast_lp_mean_sweep, processed_data.presence_result.extra_result.slow_lp_mean_sweep,
+                                      processed_data.presence_result.extra_result.lp_noise, processed_data.presence_result.extra_result.presence_distance_index,
+                                      processed_data.breathing_result.extra_result.psd, processed_data.breathing_result.extra_result.frequencies, 
+                                      processed_data.breathing_result.extra_result.breathing_motion, processed_data.breathing_result.extra_result.time_vector,
+                                      processed_data.breathing_result.extra_result.breathing_rate_history, processed_data.breathing_result.extra_result.all_breathing_rate_history]
+                            csv_writer.writerow(toSend)
                             print("Calculating respiration rate...")
-                    else:
-                        print("Breath results not yet calculted")
+                    else: 
+                        if (processed_data.presence_result):
+                            #No breathing results, but presence result
+                            print("Presence detected")
+                            toSend = [currentTime, 'N/A', 
+                                      processed_data.app_state, processed_data.distances_being_analyzed, 
+                                      processed_data.presence_result.intra_presence_score, processed_data.presence_result.intra, 
+                                      processed_data.presence_result.inter_presence_score, processed_data.presence_result.inter,
+                                      processed_data.presence_result.presence_distance, processed_data.presence_result.presence_detected,
+                                      processed_data.presence_result.extra_result.frame, processed_data.presence_result.extra_result.abs_mean_sweep,
+                                      processed_data.presence_result.extra_result.fast_lp_mean_sweep, processed_data.presence_result.extra_result.slow_lp_mean_sweep,
+                                      processed_data.presence_result.extra_result.lp_noise, processed_data.presence_result.extra_result.presence_distance_index,
+                                      'N/A', 'N/A', 
+                                      'N/A', 'N/A',
+                                      'N/A', 'N/A']
+                            csv_writer.writerow(toSend)
+                        else:
+                            toSend = [currentTime, 'N/A', 
+                                      processed_data.app_state, processed_data.distances_being_analyzed, 
+                                      'N/A', 'N/A', 
+                                      'N/A', 'N/A',
+                                      'N/A', 'N/A',
+                                      'N/A', 'N/A',
+                                      'N/A', 'N/A',
+                                      'N/A', 'N/A',
+                                      'N/A', 'N/A', 
+                                      'N/A', 'N/A',
+                                      'N/A', 'N/A']
+                            csv_writer.writerow(toSend)
+                            print("Presence not detected")
                 except et.PGProccessDiedException:
                     break
 
