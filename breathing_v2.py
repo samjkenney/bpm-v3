@@ -28,39 +28,84 @@ def main():
     # Sensor selections
     sensor = 1
 
-    # Default configuration is 6, 20, 20
-    # Accuracy seems to be wayy far off set to 1
+    #Default configuration
     breathing_processor_config = BreathingProcessorConfig(
-        lowest_breathing_rate=2.1,
-        highest_breathing_rate=13.7,
-        time_series_length_s=10,
+        lowest_breathing_rate=6,
+        highest_breathing_rate=60,
+        time_series_length_s=20,
     )
 
+    #Grace tuning breathing processor
+    breathing_processor_config = BreathingProcessorConfig(
+        lowest_breathing_rate= 4,
+        highest_breathing_rate= 60,
+        time_series_length_s=20
+    )
+
+    #Sam tuning 
+    # breathing_processor_config = BreathingProcessorConfig(
+    #     lowest_breathing_rate= 2.1,
+    #     highest_breathing_rate= 13.7,
+    #     time_series_length_s= 10
+    # )
+
+
     # Presence Configurations
+    #Sam Tuned
+    #presence_config = PresenceProcessorConfig(
+        #intra_detection_threshold=4,
+        #intra_frame_time_const=0.15,
+        #inter_frame_fast_cutoff=20,
+        #inter_frame_slow_cutoff=0.05,
+        #inter_frame_deviation_time_const=0.5,
+        #intra_output_time_const=0.1,    
+    #)
+
+    #Grace Tuned + Default
     presence_config = PresenceProcessorConfig(
         intra_detection_threshold=4,
-        intra_frame_time_const=0.05,
+        intra_frame_time_const=0.15,
         inter_frame_fast_cutoff=20,
         inter_frame_slow_cutoff=0.2,
-        inter_frame_deviation_time_const=0.5,
-        inter_detection_threshold= 1.3,
-        intra_output_time_const=0.5, 
+        inter_frame_deviation_time_const=0.5    
     )
 
     # Breathing Configurations
+    
+    #Sam Tuned
+    # ref_app_config = RefAppConfig(
+    #     use_presence_processor=False,
+    #     start_m=0.4, #cannot be 0
+    #     end_m=0.8,
+    #     hwaas = 50,
+    #     num_distances_to_analyze=3,
+    #     distance_determination_duration=10,
+    #     breathing_config=breathing_processor_config,
+    #     presence_config=presence_config,
+    #     profile = Profile.PROFILE_5
+    # )
+
+    #Grace Tuned
+    # ref_app_config = RefAppConfig(
+    #     use_presence_processor=True,
+    #     #Adjust start and end of range as appropriate
+    #     start_m=0.6, #cannot be 0
+    #     end_m=1,
+    #     num_distances_to_analyze=5,
+    #     distance_determination_duration=5,
+    #     breathing_config=breathing_processor_config,
+    #     presence_config=presence_config,
+    #     profile = Profile.PROFILE_5,
+    #     sweeps_per_frame= 8
+    # )
+
+    #Default
     ref_app_config = RefAppConfig(
-        use_presence_processor=False,
-        #Adjust start and end of range as appropriate
-        start_m=0.4, #cannot be 0
-        end_m=0.8,
-        hwaas = 50,
+        use_presence_processor=True,
         num_distances_to_analyze=3,
-        #frame_rate = 15,
-        #sweeps_per_frame= 24, 
-        distance_determination_duration=10,
+        distance_determination_duration=5,
         breathing_config=breathing_processor_config,
         presence_config=presence_config,
-        profile = Profile.PROFILE_5
     )
 
     # End setup configurations
@@ -72,7 +117,7 @@ def main():
 
     ratio = 1
     
-    with a121.H5Recorder("./raw_data-145.h5",client):
+    with a121.H5Recorder("./raw_data-161.h5",client):
         # Preparation for reference application processor
         ref_app = RefApp(client=client, sensor_id=sensor, ref_app_config=ref_app_config)
         ref_app.start()
@@ -82,19 +127,18 @@ def main():
 
     
         startTime = time.time()
-        #opens a csv file
-        with open('sensorData-d0.6-front-r5-15.csv', 'w', newline = '') as csvfile:
+        with open('sensorData-final-default-regular.csv', 'w', newline = '') as csvfile:
             csv_writer = csv.writer(csvfile)
             csv_writer.writerow(["Timestamp", "Breath Rate", 
-                                 "App State", "Distances Being Analyzed",
-                                 "Intra Presence Score", "Intra",
-                                   "Inter Presence Score", "Inter",
-                                 "Presence Distance", "Presence Detected", 
-                                   "Frame", "Abs Mean Sweep", 
-                                  "Fast LP Mean Sweep", "Slow LP Mean Sweep", "LP Noise",
-                                   "Presence Distance Index", "PSD", "Frequencies", "Breathing Motion", 
-                                    "Time Vector", "Breathing Rate History",
-                                     "All Breathing Rate History"])
+                                "App State", "Distances Being Analyzed",
+                                "Intra Presence Score", "Intra",
+                                "Inter Presence Score", "Inter",
+                                "Presence Distance", "Presence Detected", 
+                                "Frame", "Abs Mean Sweep", 
+                                "Fast LP Mean Sweep", "Slow LP Mean Sweep", "LP Noise",
+                                "Presence Distance Index", "PSD", "Frequencies", "Breathing Motion", 
+                                "Time Vector", "Breathing Rate History",
+                                "All Breathing Rate History"])
             while not interrupt_handler.got_signal:
                 #Gets the data from the sensor
                 distressCounter = 0
