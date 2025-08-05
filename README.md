@@ -27,11 +27,15 @@ Raw data is not directly mapped onto corresponding csv's. GAMBL files are saved 
 
 roundNumber-trialNumber.gambl
 
+Specific variables for each trial can be found in the corresponding HTML files in processing. 
+
 **For grace-data:**
 
 The data is organized by date collected. Breathing belt, sensor, and raw data can be matched, as they are named with the same convention:
 
 grace-dataType-date-trialNumber.extension
+
+Specific variables changed for each trial can be found in the corresponding Google Doc. 
 
 # Running Tests
 The Vernier GoDirect Belt can collect data on the [web app](https://graphicalanalysis.app/). Go to Sensor Data Collection, then turn on the Respiration Belt. Connect via Bluetooth as prompted by Graphical Analysis, or via cord. 
