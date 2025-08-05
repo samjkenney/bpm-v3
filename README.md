@@ -15,7 +15,7 @@ sensor-data: stores the estimated respiration rate and time stamp (all), as well
 breathing-belt-data: stores the time, respiration rate, and force measurement from the breathing belt in a csv file. 
 
 ## Matching Data
-**For sam-data:**
+### For sam-data:
 
 There are seperate folders for breathing-belt, gambl, raw, and sensor data. Breathing Belt and Sensor can be matched by filename, as they are both named with the same conventions:
 
@@ -29,7 +29,7 @@ roundNumber-trialNumber.gambl
 
 Specific variables for each trial can be found in the corresponding HTML files in processing. 
 
-**For grace-data:**
+### For grace-data:
 
 The data is organized by date collected. Breathing belt, sensor, and raw data can be matched, as they are named with the same convention:
 
