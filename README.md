@@ -42,5 +42,27 @@ The Vernier GoDirect Belt can collect data on the [web app](https://graphicalana
 The settings can be changed in the bottom left hand corner of the app. Click 'Collect' to begin collecting the data. 
 To export, click on the top left and navigate to "Export."
 
+## Metronome Breathing
+Metronome breathing was used for some tests. Some respiration rates will have YouTube videos specifically for timed breaths, but for others, using an actual metronome is more feasible. 
+
+**5 BPM:**  60 beats per minute, in 3/4 time, one measure (three beats) in, one measure hold, one measure out, one measure hold. 
+
+**6 BPM:** 
+- 72 beats per minute, in 3/4 time, one measure (three beats) in, one measure hold, one measure out, one measure hold.
+- 48 beats per minute, in 4/4 time, one measure (four beats) in, one measure out.
+
+**8.75 BPM:** 70 beats per minute, in 4/4 time, one measure (four beats) in, one measure out.
+
+**9 BPM:** 
+- 72 beats per minute, in 2/4 time, one measure (two beats) in, one measure hold, one measure out, one measure hold.
+- 72 beats per minute, in 4/4 time, one measure (four beats) in, one measure out.
+
+**11.87 BPM:** 95 beats per minute, in 4/4 time, one measure (four beats) in, one measure out.
+
+**12 BPM:** 
+- 72 beats per minute, 4/4 time, one beat in, one beat hold, one beat out, one beat hold.
+- 96 beats per minute, in 4/4 time, one measure (four beats) in, one measure out.
+
+
 # Bugs
--'Cannot close recorder' when ending the program. This bug does not affect data collection or function of the program. 
+- 'Cannot close recorder' when ending the program. This bug does not affect data collection or function of the program. 
