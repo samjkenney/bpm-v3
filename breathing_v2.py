@@ -112,12 +112,16 @@ def main():
 
     # Preparation for client
     sensor_config = get_sensor_config(ref_app_config=ref_app_config)
-    client = a121.Client.open(serial_port="COM7", override_baudrate=115200)
+    # Replace the serial_port with the appropriate one. 
+    serial_port = "COM7"
+    client = a121.Client.open(serial_port=serial_port, override_baudrate=115200)
     client.setup_session(sensor_config)
 
     ratio = 1
     
-    with a121.H5Recorder("./raw_data-161.h5",client):
+    # Replace with desired path for h5 data
+    h5file = "./raw_data.h5"
+    with a121.H5Recorder(h5file,client):
         # Preparation for reference application processor
         ref_app = RefApp(client=client, sensor_id=sensor, ref_app_config=ref_app_config)
         ref_app.start()
@@ -127,7 +131,10 @@ def main():
 
     
         startTime = time.time()
-        with open('sensorData-final-default-regular.csv', 'w', newline = '') as csvfile:
+
+        #Replace with desired path for csv data
+        csvFile = 'sensor-data.csv'
+        with open(csvFile, 'w', newline = '') as csvfile:
             csv_writer = csv.writer(csvfile)
             csv_writer.writerow(["Timestamp", "Breath Rate", 
                                 "App State", "Distances Being Analyzed",
@@ -140,8 +147,6 @@ def main():
                                 "Time Vector", "Breathing Rate History",
                                 "All Breathing Rate History"])
             while not interrupt_handler.got_signal:
-                #Gets the data from the sensor
-                distressCounter = 0
                 processed_data = ref_app.get_next()
                 currentTime = time.time() - startTime
                 try:
