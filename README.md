@@ -14,6 +14,25 @@ sensor-data: stores the estimated respiration rate and time stamp (all), as well
 
 breathing-belt-data: stores the time, respiration rate, and force measurement from the breathing belt in a csv file. 
 
+## Matching Data
+**For sam-data:**
+
+There are seperate folders for breathing-belt, gambl, raw, and sensor data. Breathing Belt and Sensor can be matched by filename, as they are both named with the same conventions:
+
+sourceType_height_distance_position_modifier.csv
+
+Some also include an angle, which was omitted after initial testing, and some rounds exclude distance/height. The modifier may represent variables changed, but more often will represent the round of testing. 
+
+Raw data is not directly mapped onto corresponding csv's. GAMBL files are saved under corresponding names, though they vary. Generally, they're saved as:
+
+roundNumber-trialNumber.gambl
+
+**For grace-data:**
+
+The data is organized by date collected. Breathing belt, sensor, and raw data can be matched, as they are named with the same convention:
+
+grace-dataType-date-trialNumber.extension
+
 # Running Tests
 The Vernier GoDirect Belt can collect data on the [web app](https://graphicalanalysis.app/). Go to Sensor Data Collection, then turn on the Respiration Belt. Connect via Bluetooth as prompted by Graphical Analysis, or via cord. 
 The settings can be changed in the bottom left hand corner of the app. Click 'Collect' to begin collecting the data. 
