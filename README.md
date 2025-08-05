@@ -1,6 +1,14 @@
 # Intro
 This repository hosts code for the Opioid Overdose Detection and Response System by Grace Everts (everts060@umn.edu) and Sam Kenney(kenneys@umn.edu). The code runs a respiration detection algorithm on the SparkFun XM125 A121 Radar Breakout. The algorithm is sourced from Acconeer, and the program was modified with the intention of assessing accuracy for the system. Modifications from Acconeer code included changing parameters and allowing for data collection in a csv file. 
 
+# Contents
+- grace-data: data collected by Grace
+- plotting: scripts used to create visualizations
+- processing: scripts used to process data in Python and R, including summaries of trials from Sam
+- sam-data: data collected by Sam
+- server-files: files for the resource website part of the system
+- breathing_v2.py: code using Acconeer API to record respiration rate
+
 # Getting Started
  - Install dependencies via [Acconeer's Exploration Tool](https://github.com/acconeer/acconeer-python-exploration).
  - Connect the sensor to a COM port, and identify which COM port it is in. On Windows, you can use Device Manager to determine this.
@@ -35,7 +43,7 @@ The data is organized by date collected. Breathing belt, sensor, and raw data ca
 
 grace-dataType-date-trialNumber.extension
 
-Specific variables changed for each trial can be found in the corresponding Google Doc. 
+Specific variables changed for each trial can be found in the [corresponding Google Doc](https://docs.google.com/document/d/1mFfBqXXIJU5gf9SHbh3CQ2eckthQ8ffLl0ykk3uS1jE/edit?tab=t.0). 
 
 # Running Tests
 The Vernier GoDirect Belt can collect data on the [web app](https://graphicalanalysis.app/). Go to Sensor Data Collection, then turn on the Respiration Belt. Connect via Bluetooth as prompted by Graphical Analysis, or via cord. 
