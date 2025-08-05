@@ -1,5 +1,5 @@
 # Intro
-This repository hosts code for the Opioid Overdose Detection and Response System by [Grace Everts](everts060@umn.edu) and [Sam Kenney](kenneys@umn.edu). The code runs a respiration detection algorithm on the SparkFun XM125 A121 Radar Breakout. The algorithm is sourced from Acconeer, and the program was modified with the intention of assessing accuracy for the system. Modifications from Acconeer code included changing parameters and allowing for data collection in a csv file. 
+This repository hosts code for the Opioid Overdose Detection and Response System by Grace Everts (everts060@umn.edu) and Sam Kenney(kenneys@umn.edu). The code runs a respiration detection algorithm on the SparkFun XM125 A121 Radar Breakout. The algorithm is sourced from Acconeer, and the program was modified with the intention of assessing accuracy for the system. Modifications from Acconeer code included changing parameters and allowing for data collection in a csv file. 
 
 # Getting Started
  - Install dependencies via [Acconeer's Exploration Tool](https://github.com/acconeer/acconeer-python-exploration).
