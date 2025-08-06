@@ -76,7 +76,10 @@ Metronome breathing was used for some tests. Some respiration rates will have Yo
 - 'Cannot close recorder' when ending the program. This bug does not affect data collection or function of the program.
 
 # Results
-Generally, we've found the results of the sensor to be very variable across different settings and different people. We did manage to get a Mean Absolute Percent Error < 20%. 
+Generally, we've found the results of the sensor to be very variable across different settings and different people. We did manage to get a Mean Absolute Percent Error < 20%. Based on inspection of raw data, we suspect that there is challenge in determining distance accurately, and based on the findings that profile improved accuracy, we suggest testing:
+- Changing determine_step_length() in ref_app.py to return 128.
+- Changing base_step_length in _utils.py to 0.005.
+- Continuing to alter end_m and start_m as parameters for the processor.
 
 ## Future Work
 - More testing, specifically on other people
