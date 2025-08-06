@@ -73,4 +73,12 @@ Metronome breathing was used for some tests. Some respiration rates will have Yo
 
 
 # Bugs
-- 'Cannot close recorder' when ending the program. This bug does not affect data collection or function of the program. 
+- 'Cannot close recorder' when ending the program. This bug does not affect data collection or function of the program.
+
+# Results
+Generally, we've found the results of the sensor to be very variable across different settings and different people. We did manage to get a Mean Absolute Percent Error < 20%. 
+
+## Future Work
+- More testing, specifically on other people
+- Creating higher-fidelity prototypes of the whole system
+- Trying to improve the algorithm for accuracy
