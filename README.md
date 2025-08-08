@@ -1,6 +1,14 @@
 # Intro
 This repository hosts code for the Opioid Overdose Detection and Response System by Grace Everts (everts060@umn.edu) and Sam Kenney(kenneys@umn.edu). The code runs a respiration detection algorithm on the SparkFun XM125 A121 Radar Breakout. The algorithm is sourced from Acconeer, and the program was modified with the intention of assessing accuracy for the system. Modifications from Acconeer code included changing parameters and allowing for data collection in a csv file. 
 
+# Contents
+- grace-data: data collected by Grace
+- plotting: scripts used to create visualizations
+- processing: scripts used to process data in Python and R, including summaries of trials from Sam
+- sam-data: data collected by Sam
+- server-files: files for the resource website part of the system
+- breathing_v2.py: code using Acconeer API to record respiration rate
+
 # Getting Started
  - Install dependencies via [Acconeer's Exploration Tool](https://github.com/acconeer/acconeer-python-exploration).
  - Connect the sensor to a COM port, and identify which COM port it is in. On Windows, you can use Device Manager to determine this.
@@ -15,7 +23,7 @@ sensor-data: stores the estimated respiration rate and time stamp (all), as well
 breathing-belt-data: stores the time, respiration rate, and force measurement from the breathing belt in a csv file. 
 
 ## Matching Data
-**For sam-data:**
+### For sam-data:
 
 There are seperate folders for breathing-belt, gambl, raw, and sensor data. Breathing Belt and Sensor can be matched by filename, as they are both named with the same conventions:
 
@@ -27,16 +35,53 @@ Raw data is not directly mapped onto corresponding csv's. GAMBL files are saved 
 
 roundNumber-trialNumber.gambl
 
-**For grace-data:**
+Specific variables for each trial can be found in the corresponding HTML files in processing. 
+
+### For grace-data:
 
 The data is organized by date collected. Breathing belt, sensor, and raw data can be matched, as they are named with the same convention:
 
 grace-dataType-date-trialNumber.extension
+
+Specific variables changed for each trial can be found in the [corresponding Google Doc](https://docs.google.com/document/d/1mFfBqXXIJU5gf9SHbh3CQ2eckthQ8ffLl0ykk3uS1jE/edit?tab=t.0). 
 
 # Running Tests
 The Vernier GoDirect Belt can collect data on the [web app](https://graphicalanalysis.app/). Go to Sensor Data Collection, then turn on the Respiration Belt. Connect via Bluetooth as prompted by Graphical Analysis, or via cord. 
 The settings can be changed in the bottom left hand corner of the app. Click 'Collect' to begin collecting the data. 
 To export, click on the top left and navigate to "Export."
 
+## Metronome Breathing
+Metronome breathing was used for some tests. Some respiration rates will have YouTube videos specifically for timed breaths, but for others, using an actual metronome is more feasible. 
+
+**5 BPM:**  60 beats per minute, in 3/4 time, one measure (three beats) in, one measure hold, one measure out, one measure hold. 
+
+**6 BPM:** 
+- 72 beats per minute, in 3/4 time, one measure (three beats) in, one measure hold, one measure out, one measure hold.
+- 48 beats per minute, in 4/4 time, one measure (four beats) in, one measure out.
+
+**8.75 BPM:** 70 beats per minute, in 4/4 time, one measure (four beats) in, one measure out.
+
+**9 BPM:** 
+- 72 beats per minute, in 2/4 time, one measure (two beats) in, one measure hold, one measure out, one measure hold.
+- 72 beats per minute, in 4/4 time, one measure (four beats) in, one measure out.
+
+**11.87 BPM:** 95 beats per minute, in 4/4 time, one measure (four beats) in, one measure out.
+
+**12 BPM:** 
+- 72 beats per minute, 4/4 time, one beat in, one beat hold, one beat out, one beat hold.
+- 96 beats per minute, in 4/4 time, one measure (four beats) in, one measure out.
+
+
 # Bugs
--'Cannot close recorder' when ending the program. This bug does not affect data collection or function of the program. 
+- 'Cannot close recorder' when ending the program. This bug does not affect data collection or function of the program.
+
+# Results
+Generally, we've found the results of the sensor to be very variable across different settings and different people. We did manage to get a Mean Absolute Percent Error < 20%. Based on inspection of raw data, we suspect that there is challenge in determining distance accurately, and based on the findings that profile improved accuracy, we suggest testing:
+- Changing determine_step_length() in ref_app.py to return 128.
+- Changing base_step_length in _utils.py to 0.005.
+- Continuing to alter end_m and start_m as parameters for the processor.
+
+## Future Work
+- More testing, specifically on other people
+- Creating higher-fidelity prototypes of the whole system
+- Trying to improve the algorithm for accuracy
